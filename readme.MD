@@ -1,1 +1,1 @@
-# kilpio/jenkins_dockerized 
+# jenkins_dockerized

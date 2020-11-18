@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  jenkins:
+    container_name: jenkins_dockerized
+    image: jenkins_dockerized
+    build:
+        context: .
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - ${HOST_DOCKER}:/var/run/docker.sock
+      - ./jenkins_home:/var/jenkins_home
+    environment:
+      - JENKINS_OPTS=--httpPort=-1 --httpsPort=8080 --httpsKeyStore=/var/jenkins_home/keystore/jenkins_keystore.jks --httpsKeyStorePassword=${KEYSTORE_PASS}
+#      - USER_GROUP_ID: $USER_GROUP_ID
+#      - USER_ID: $USER_ID
