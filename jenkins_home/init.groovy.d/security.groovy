@@ -9,7 +9,7 @@ import jenkins.model.Jenkins
 def instance = Jenkins.getInstance()
 
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-hudsonRealm.createAccount("admin", "changeme")
+//hudsonRealm.createAccount("admin", "changeme")
 instance.setSecurityRealm(hudsonRealm)
 
 def strategy = new FullControlOnceLoggedInAuthorizationStrategy()

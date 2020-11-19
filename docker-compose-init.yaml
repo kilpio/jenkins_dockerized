@@ -10,3 +10,4 @@ services:
     volumes:
       - ${HOST_DOCKER}:/var/run/docker.sock
       - ./jenkins_home:/var/jenkins_home
+#    command: mv init.groovy.d init.groovy.d~
