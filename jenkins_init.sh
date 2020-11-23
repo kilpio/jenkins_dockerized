@@ -5,7 +5,7 @@ export USER_ID=$(id -u)
 
 docker-compose -f docker-compose-init.yaml up -d
 sleep 5
-#docker logs jenkins_dokerized -f
+docker logs jenkins_dokerized -f
 
 echo "waiting for initial admin password..."
 
