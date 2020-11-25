@@ -1,5 +1,9 @@
 useradd -m -s /bin/bash test -u 6666
 usermod -aG docker test
 docker build -t kilpio/jenkins_dockerized .
-echo "GIT_UID=$(id -u):$(id -g)" >> ./.env
+echo "UID_GID=$(id -u):$(id -g)" >> ./.env
+
+docker run -u $(id -u):$(id -g) -v "$(pwd)/jenkins_home":'/var/jenkins_home' -it --entrypoint="/var/jenkins_home/make_pks.sh" kilpio/jenkins_dockerized
+source .env && docker run -u ${UID_GID} -v "$(pwd)/jenkins_home":'/var/jenkins_home' -it --entrypoint="/var/jenkins_home/make_pks.sh" kilpio/jenkins_dockerized "${KEYSTORE_PASS}"
+
 

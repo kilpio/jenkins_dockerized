@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 
+export HOME=${JENKINS_HOME}
+
+
 rm -rf ${JENKINS_HOME}/keystore/
 rm -rf ${JENKINS_HOME}/openssl/
 
 mkdir openssl && cd openssl
-export MYPASS=$(openssl rand -base64 8 | sed 's/[^a-zA-Z]//g')
+MYPASS=${1}
+export MYPASS
+
+
+#export MYPASS=$(openssl rand -base64 8 | sed 's/[^a-zA-Z]//g')
 
 openssl genrsa -out ca.key 2048
 openssl req -config /var/jenkins_home/openssl.cnf -passout env:MYPASS -new -newkey rsa:2048 > new.ssl.csr
@@ -19,8 +26,8 @@ echo "keystore password: $MYPASS"
 mkdir ${JENKINS_HOME}/keystore
 cp  ${JENKINS_HOME}/openssl/jenkins_keystore.jks ${JENKINS_HOME}/keystore/
 
-chown -R jenkins:jenkins ${JENKINS_HOME}/keystore/
-chown -R jenkins:jenkins ${JENKINS_HOME}/openssl/
+#chown -R jenkins:jenkins ${JENKINS_HOME}/keystore/
+#chown -R jenkins:jenkins ${JENKINS_HOME}/openssl/
 
 
 chmod 700 ${JENKINS_HOME}/keystore/
