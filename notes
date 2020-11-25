@@ -1,0 +1,5 @@
+useradd -m -s /bin/bash test -u 6666
+usermod -aG docker test
+docker build -t kilpio/jenkins_dockerized .
+echo "GIT_UID=$(id -u):$(id -g)" >> ./.env
+
