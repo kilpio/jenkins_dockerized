@@ -7,3 +7,28 @@ docker run -u $(id -u):$(id -g) -v "$(pwd)/jenkins_home":'/var/jenkins_home' -it
 source .env && docker run -u ${UID_GID} -v "$(pwd)/jenkins_home":'/var/jenkins_home' -it --entrypoint="/var/jenkins_home/make_pks.sh" kilpio/jenkins_dockerized "${KEYSTORE_PASS}"
 
 
+Prerequisistes for jenkins in docker installation 
+
+1. User must be in sudoers group:
+ask admin to add: (usermod -aG sudo <username>)
+
+2. As username add yourself to docker goup:
+
+```bash
+sudo usermod -aG docker ${USER}
+exit
+```
+and login again.
+
+3. Clone the jenkins_dockerized repo:
+
+```bash
+git clone https://github.com/kilpio/jenkins_dockerized
+cd jenkins_dockerized
+```
+
+4. Add your users uid:guid to the .env config file:
+
+```bash
+echo "UID_GID=$(id -u):$(id -g)" >> ./.env
+```
