@@ -101,6 +101,7 @@ pam-auth \
 ansicolor \
 popper-api \
 font-awesome-api \
+thinBackup \
 "
 
 def plugins = pluginParameter.split()
