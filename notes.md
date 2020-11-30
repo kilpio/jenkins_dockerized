@@ -51,7 +51,7 @@ You may leave it as it is or change in the .env file to anything else.
 6. pull the kilpio/jenkins_dockerized:latest image or build it locally:
 
 ```bash
-docker build -t kilpio/jenkins_dockerized .
+docker build --no-cache -t kilpio/jenkins_dockerized .
 ```
 
 7. Now create the Jenkins keystore in jenkins_home/keystore dir:
