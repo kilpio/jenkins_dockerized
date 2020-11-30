@@ -18,6 +18,7 @@ ask admin to add: (usermod -aG sudo <username>)
 2. As username add yourself to docker goup:
 
 ```bash
+whoami
 sudo usermod -aG docker ${USER}
 exit
 ```
