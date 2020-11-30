@@ -22,6 +22,7 @@ whoami
 sudo usermod -aG docker ${USER}
 exit
 ```
+
 and login again.
 
 3. Clone the jenkins_dockerized repo:
@@ -39,7 +40,8 @@ echo "UID_GID=$(id -u):$(id -g)" >> ./.env
 
 Run 
 ```bash
-cat ~/.env
+id
+cat ./.env
 ```
 to be sure you uid:git were added properly.
 
