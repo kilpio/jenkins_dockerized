@@ -6,6 +6,9 @@ echo "UID_GID=$(id -u):$(id -g)" >> ./.env
 docker run -u $(id -u):$(id -g) -v "$(pwd)/jenkins_home":'/var/jenkins_home' -it --entrypoint="/var/jenkins_home/make_pks.sh" kilpio/jenkins_dockerized
 source .env && docker run -u ${UID_GID} -v "$(pwd)/jenkins_home":'/var/jenkins_home' -it --entrypoint="/var/jenkins_home/make_pks.sh" kilpio/jenkins_dockerized "${KEYSTORE_PASS}"
 
+```bash
+------------------------------------------------------------------------------------------------------------------------
+```
 
 Prerequisistes for jenkins in docker installation 
 
@@ -27,7 +30,7 @@ git clone https://github.com/kilpio/jenkins_dockerized
 cd jenkins_dockerized
 ```
 
-4. Add your users uid:guid to the .env config file:
+4. Add your user's uid:gid to the .env config file:
 
 ```bash
 echo "UID_GID=$(id -u):$(id -g)" >> ./.env
@@ -35,7 +38,7 @@ echo "UID_GID=$(id -u):$(id -g)" >> ./.env
 
 Run 
 ```bash
-cat .env
+cat ~/.env
 ```
 to be sure you uid:git were added properly.
 
