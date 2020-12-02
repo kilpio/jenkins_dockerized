@@ -1,15 +1,6 @@
 #!/usr/bin/env bash
 
-source .env
+source .env && docker run -u $(id -u) -v "$(pwd)/jenkins_home":'/var/jenkins_home' \
+-it --entrypoint="/var/jenkins_home/make_pks.sh" jenkins_dockerized "${KEYSTORE_PASS}"
 
-export USER_GROUP_ID=$(id -g)
-export USER_ID=$(id -u)
-
-
-echo "Creating new keystore..."
-docker-compose run jenkins ./make_pks.sh
-echo "Saving password in the .env file..."
-
-KEYSTORE_PASSWORD=$(cat ${HOST_JENKINS_DATA}/keystorepass)
-sed -i "s/^KEYSTORE_PASS.*/KEYSTORE_PASS=${KEYSTORE_PASSWORD}/g" .env
-rm ${HOST_JENKINS_DATA}/keystorepass
+ls -la ./jenkins_home/keystore/jenkins_keystore.jks

@@ -4,7 +4,7 @@ services:
   jenkins:
     container_name: jenkins_dockerized
     image: jenkins_dockerized
-    user: "${UID_GID}"
+    user: "$JENKINS_UID:$JENKINS_GID"
     build:
         context: .
     ports:
@@ -12,6 +12,6 @@ services:
       - 50000:50000
     volumes:
       - ${HOST_DOCKER}:/var/run/docker.sock
-      - ./jenkins_home:/var/jenkins_home
+      - ${HOST_JENKINS_DATA}:/var/jenkins_home
     environment:
       - JENKINS_OPTS=--httpPort=-1 --httpsPort=8080 --httpsKeyStore=/var/jenkins_home/keystore/jenkins_keystore.jks --httpsKeyStorePassword=${KEYSTORE_PASS}
