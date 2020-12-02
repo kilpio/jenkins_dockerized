@@ -6,6 +6,15 @@ echo "UID_GID=$(id -u):$(id -g)" >> ./.env
 docker run -u $(id -u):$(id -g) -v "$(pwd)/jenkins_home":'/var/jenkins_home' -it --entrypoint="/var/jenkins_home/make_pks.sh" kilpio/jenkins_dockerized
 source .env && docker run -u ${UID_GID} -v "$(pwd)/jenkins_home":'/var/jenkins_home' -it --entrypoint="/var/jenkins_home/make_pks.sh" kilpio/jenkins_dockerized "${KEYSTORE_PASS}"
 
+userdel jenkins
+useradd -m -s /bin/bash -d /var/jenkins_home jenkins -u 7777
+usermod -aG docker jenkins
+
+
+
+source .env && docker run -u 0 -v "$(pwd)/jenkins_home":'/var/jenkins_home' -it --entrypoint="recreate-jenkins-user.sh" kilpio/jenkins_dockerized 7777
+
+
 ```bash
 ------------------------------------------------------------------------------------------------------------------------
 ```
@@ -51,19 +60,41 @@ You may leave it as it is or change in the .env file to anything else.
 6. pull the kilpio/jenkins_dockerized:latest image or build it locally:
 
 ```bash
-docker build --no-cache -t kilpio/jenkins_dockerized .
+docker build [--no-cache] -t jenkins_dockerized .
 ```
 
-7. Now create the Jenkins keystore in jenkins_home/keystore dir:
+7. Now (before startint the Jenkins container) create the Jenkins keystore in jenkins_home/keystore dir. We need this for set up https access to the Jenkins web interface.
+It's most probable that we do not have JRE keytool utility on our local host, so we will use one from the jenkins image:
 
 ```bash
-source .env && docker run -u ${UID_GID} -v "$(pwd)/jenkins_home":'/var/jenkins_home' \
--it --entrypoint="/var/jenkins_home/make_pks.sh" kilpio/jenkins_dockerized "${KEYSTORE_PASS}"
+
+source .env && docker run -u $(id -u) -v "$(pwd)/jenkins_home":'/var/jenkins_home' \
+-it --entrypoint="/var/jenkins_home/make_pks.sh" jenkins_dockerized "${KEYSTORE_PASS}"
 
 ls -la ./jenkins_home/keystore/jenkins_keystore.jks
 ```
 
-8. Now you are ready to start Jenkins:
+check if it has only rw permission for your current user.
+
+8. Now you are almost ready to start Jenkins.
+The 'docker' group should have the same id on your host and in the jenkins containter. Get it with
+
+```bash
+getent group docker | cut -d ':' -f 3
+```
+on your host (most likely it will be  999).
+
+to check the group id in the container, run
+
+```bash
+source .env && docker run -it --entrypoint="/usr/bin/getent" jenkins_dockerized group docker | cut -d ':' -f 3
+```
+
+9. Launch
+
+```bash
+JENKINS_UID=7777 JENKINS_GID=999 docker-compose up -d --force-recreate
+```
 
 ```bash
 docker-compose up -d
