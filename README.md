@@ -1,50 +1,50 @@
-# Deploing jenkins with docker inside with **jenkins_dockerized**
+# Deploying Jenkins with docker inside with **jenkins_dockerized**
 
-jenkins_dockerized (JD) is a set of scripts and docker-compose files needed to install containerized jenkins with docker support. It's based on jenkins/jenkins:latest image.
+The jenkins_dockerized (JD) is a set of scripts and docker-compose files needed to install containerized Jenkins with docker support. It's based on jenkins/jenkins:latest image.
 
 ## Requirements
 
-JD requires linux machine with docker and docker-compose installed. Any user in 'docker' group can run JD container.
+JD requires Linux machine with docker and docker-compose installed. Any user in 'docker' group can run JD container.
 
-## Starting
+## Running from custom user
 
-Regular jenkins/jenkins docker image requires user with uid:gid 1000:1000 to share jenkins_home directory. One of the efficient ways to overcome this obstacle is to change uid:gid of jenkins user inside the container to be the same as the uid:gid of the user running the container. So first you need to build an JD image suitable for your user.
+Regular jenkins/jenkins docker image requires user with uid:gid 1000:1000 to share jenkins_home directory. If you run the Jenkins container from any user with other user:group ids it will fail due to permissions.
+
+That's why we should start the docker container with the host user id explicitly. With this approach the initial 'jenkins' user defined in the jenkins/jenkins image is left outside the jenkins operation.
+
+And even more, the user running Jenkins in the container should be a member of the 'docker' group to run docker operations. The only working solution found is to launch the container also with docker group id (it is usually 999, but check this beforehand).
+
+### The .env file
+
+Here you can change the path to the Jenkins data folder location on your host (HOST_JENKINS_DATA), redefine the path to the docker socket (HOST_DOCKER) and set your original password for the Jenkins keystore ('mypass' by default). By default you should not change anything.
 
 ### Building the image
 
 Clone the <https://github.com/kilpio/jenkins_dockerized> repo and cd into the directory. Run
 
-```shell
-docker image build \
-    --build-arg USER_ID=$(id -u) \
-    --build-arg USER_GROUP_ID=$(id -g) \
-    -t jenkins_dockerized \
-    .
+```bash
+git clone https://github.com/kilpio/jenkins_dockerized
+cd jenkins_dockerized
+docker image build -t jenkins_dockerized .
 ```
 
 to build the <jenkins_dockerized> image. Or just run the <build_jenkins_with_docker_image.sh> helper script.
-The image install jenkins components in the ./jenkins_home directory that will be mounted as /var/jenkins_home in jenkins container.
+
+### Creating the keystore for https connection
 
 Jenkins uses 8080 port for the web interface and 50000 port to communicate with agents by default.
 
-### Configuring Jenkins
+To create the certificate and the keystore for ssl connections run the 
+<jenkins-switch-to-ssl.sh> script. We need Java keytool utility to create the keystore, which is, most likely, missing on your host, so we use one from the Jenkins image and perform all the generation in the jenkins_dockerized container. All the artifacts are left in ./jenkins_home directory.
 
-The ./jenkins_home directory the comes with JD initially contains some files necessary to set up ssl connection, as well as the init.groovy.d directory with a list of plugins to be preinstalled (see installPlugins.groovy). You can add or delete plugins from the list in this file to suite your needs. Of course, all the plugins could be installed or uninstalled later in Jenkins web-interface.
+## Start the container
 
-To make some primary configuration steps run the 'jenkins_init.sh' script that will install jenkins and set the initial admin password. Wait until the Jenkins if fully up and running by watching the container log
+Now Jenkins container is ready to be started and configured.
 
-```shell
-docker logs jenkins_dokerized -f
-```
-
-Now, when the JD container is fully functional run the 'jenkins-switch-to-ssl.sh' script to create the certificate and the keystore for ssl connections. The certificate password will be saved in your .env file in KEYSTORE_PASS variable.
-
-### Production use
-
-Now stop the jenkins_dokerized container and start it in a usual way:
+Use <start-jenkins-container.sh> helper script, which performs the following command:
 
 ```shell
-docker-compose up -d jenkins
+JENKINS_UID=$(id -u) JENKINS_GID=$(getent group docker | cut -d ':' -f 3) docker-compose up -d
 ```
 
-and connect to the web interface <https://<YOUR_SERVER_ADDR>:8080> to proceed.
+Connect to the web interface <https://<YOUR_SERVER_ADDR>:8080> to proceed in a usual way with a new Jenkins installation.
