@@ -14,6 +14,9 @@ That's why we should start the docker container with the host user id explicitly
 
 And even more, the user running Jenkins in the container should be a member of the 'docker' group to run docker operations. The only working solution found is to launch the container also with docker group id (it is usually 999, but check this beforehand).
 
+Some utilities like ssh e.g. do not operate correctly if user has only id but not username. So the <start-jenkins-container.sh> gives name jenkins0 to the Jenkins user in container.
+
+
 ### The .env file
 
 Here you can change the path to the Jenkins data folder location on your host (HOST_JENKINS_DATA), redefine the path to the docker socket (HOST_DOCKER) and set your original password for the Jenkins keystore ('mypass' by default). By default you should not change anything.
@@ -41,10 +44,15 @@ To create the certificate and the keystore for ssl connections run the
 
 Now Jenkins container is ready to be started and configured.
 
-Use <start-jenkins-container.sh> helper script, which performs the following command:
+Use <start-jenkins-container.sh> helper script, which runs the following commands:
 
 ```shell
-JENKINS_UID=$(id -u) JENKINS_GID=$(getent group docker | cut -d ':' -f 3) docker-compose up -d
+export JENKINS_UID=$(id -u)
+export JENKINS_GID=$(getent group docker | cut -d ':' -f 3)
+
+docker-compose up -d
+docker exec -u 0 jenkins_dockerized sh -c "useradd -s /bin/bash jenkins0 -u ${JENKINS_UID} -g ${JENKINS_GID} -d /var/jenkins_home"
+
 ```
 
 Connect to the web interface <https://<YOUR_SERVER_ADDR>:8080> to proceed in a usual way with a new Jenkins installation.
