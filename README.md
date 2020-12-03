@@ -53,3 +53,4 @@ docker exec -u 0 jenkins_dockerized sh -c "useradd -s /bin/bash jenkins0 -u ${JE
 ```
 
 Connect to the web interface <https://YOUR_SERVER_ADDR:8080> to proceed in a usual way with a new Jenkins installation.
+Initial admin password is stored in ./jenkins_home/secrets/initialAdminPassword
