@@ -16,7 +16,6 @@ And even more, the user running Jenkins in the container should be a member of t
 
 Some utilities like ssh e.g. do not operate correctly if user has only id but not username. So the <start-jenkins-container.sh> gives name jenkins0 to the Jenkins user in container.
 
-
 ### The .env file
 
 Here you can change the path to the Jenkins data folder location on your host (HOST_JENKINS_DATA), redefine the path to the docker socket (HOST_DOCKER) and set your original password for the Jenkins keystore ('mypass' by default). By default you should not change anything.
@@ -37,8 +36,7 @@ to build the <jenkins_dockerized> image. Or just run the <build_jenkins_with_doc
 
 Jenkins uses 8080 port for the web interface and 50000 port to communicate with agents by default.
 
-To create the certificate and the keystore for ssl connections run the 
-<jenkins-switch-to-ssl.sh> script. We need Java keytool utility to create the keystore, which is, most likely, missing on your host, so we use one from the Jenkins image and perform all the generation in the jenkins_dockerized container. All the artifacts are left in ./jenkins_home directory.
+To create the certificate and the keystore for ssl connections run the <jenkins-switch-to-ssl.sh> script. We need Java keytool utility to create the keystore, which is, most likely, missing on your host, so we use one from the Jenkins image and perform all the generation in the jenkins_dockerized container. All the artifacts are left in ./jenkins_home directory.
 
 ## Start the container
 
@@ -52,7 +50,6 @@ export JENKINS_GID=$(getent group docker | cut -d ':' -f 3)
 
 docker-compose up -d
 docker exec -u 0 jenkins_dockerized sh -c "useradd -s /bin/bash jenkins0 -u ${JENKINS_UID} -g ${JENKINS_GID} -d /var/jenkins_home"
-
 ```
 
-Connect to the web interface <https://<YOUR_SERVER_ADDR>:8080> to proceed in a usual way with a new Jenkins installation.
+Connect to the web interface <https://YOUR_SERVER_ADDR:8080> to proceed in a usual way with a new Jenkins installation.
