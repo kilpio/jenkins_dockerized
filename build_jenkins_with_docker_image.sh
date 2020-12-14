@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-docker image build -t jenkins_dockerized .
+docker image build --no-cache -t jenkins_dockerized .
 
 
 
