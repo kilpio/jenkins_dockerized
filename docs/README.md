@@ -6,7 +6,7 @@ The jenkins_dockerized (JD) is a set of scripts and docker-compose files needed 
 
 JD requires Linux machine with docker and docker-compose installed. Any user in 'docker' group can run JD container.
 
-## Running from custom user
+## Running by custom user
 
 Regular jenkins/jenkins docker image requires user with uid:gid 1000:1000 to share jenkins_home directory. If you run the Jenkins container from any user with other user:group ids it will fail due to permissions.
 
@@ -34,9 +34,8 @@ to build the <jenkins_dockerized> image. Or just run the <build_jenkins_with_doc
 
 ### Creating the keystore for https connection
 
+At first run JD creates the Jenkins keystore in ./jenkins_home/keystore directory.
 Jenkins uses 8080 port for the web interface and 50000 port to communicate with agents by default.
-
-To create the certificate and the keystore for ssl connections run the <jenkins-switch-to-ssl.sh> script. We need Java keytool utility to create the keystore, which is, most likely, missing on your host, so we use one from the Jenkins image and perform all the generation in the jenkins_dockerized container. All the artifacts are left in ./jenkins_home directory.
 
 ## Start the container
 
