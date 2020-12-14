@@ -6,7 +6,7 @@ The jenkins_dockerized (JD) is a set of scripts and docker-compose files needed 
 
 JD requires Linux machine with docker and docker-compose installed. Any user in 'docker' group can run JD container.
 
-## Running by custom user
+## Running from custom user
 
 Regular jenkins/jenkins docker image requires user with uid:gid 1000:1000 to share jenkins_home directory. If you run the Jenkins container from any user with other user:group ids it will fail due to permissions.
 
