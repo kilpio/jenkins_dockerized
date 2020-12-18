@@ -1,6 +1,6 @@
 # Deploying Jenkins with docker inside with **jenkins_dockerized**
 
-The jenkins_dockerized (JD) is a set of scripts and docker-compose files needed to install containerized Jenkins with docker support. It's based on jenkins/jenkins:latest image.
+The jenkins_dockerized (JD) is a set of scripts and docker-compose files needed to install containerized Jenkins with docker support. It's based on jenkins/jenkins image.
 
 ## Requirements
 
