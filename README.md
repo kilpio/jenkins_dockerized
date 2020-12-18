@@ -13,7 +13,7 @@ Variables in this file define the path to the Jenkins data folder on your host (
 
 ### Running Jenkins
 
- Clone the repository and run the <start-jenkins-container.sh> to start the JD container. Jenkins runs as user jenkins0 with the same GID as the host docker.
+ Clone the repository and run the ```start-jenkins-container.sh``` to start the JD container. Jenkins runs as user jenkins0 with the same GID as the host docker.
 
 Connect to the web interface <https://YOUR_SERVER_ADDR:8080> to proceed in a usual way with a new Jenkins installation.
 Initial admin password is stored in ./jenkins_home/secrets/initialAdminPassword
@@ -24,5 +24,5 @@ At first run JD creates the Jenkins keystore in ./jenkins_home/keystore director
 
 ## Building the image
 
-In case if you need to build the image locally clone the <https://github.com/kilpio/jenkins_dockerized> repo and cd into the directory. Then run the <build_jenkins_with_docker_image.sh> helper script to build the <jenkins_dockerized> image.
+In case if you need to build the image locally clone the <https://github.com/kilpio/jenkins_dockerized> repo and cd into the directory. Then run the ```build_jenkins_with_docker_image.sh``` helper script to build the ```jenkins_dockerized``` image.
 
