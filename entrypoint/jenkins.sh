@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 TMPDIR=${JENKINS_HOME}
-rm -rf $TMPDIR/invars $TMPDIR/outvars $TMPDIR/blockedvarnames $TMPDIR/invarnames $TMPDIR/outvarnames source.vars
+rm -rf $TMPDIR/invars $TMPDIR/outvars $TMPDIR/blockedvarnames $TMPDIR/invarnames $TMPDIR/outvarnames $TMPDIR/source.vars $TMPDIR/varnames
 
 export KEYSTORE_FILE_PATH="${JENKINS_HOME}/keystore/jenkins_keystore.jks"
 export MYPASS=${KEYSTORE_PASS}
@@ -75,7 +75,7 @@ then
 fi
 
 TMPDIR=${JENKINS_HOME}
-rm -rf $TMPDIR/invars $TMPDIR/outvars $TMPDIR/blockedvarnames $TMPDIR/invarnames $TMPDIR/outvarnames source.vars
+rm -rf $TMPDIR/invars $TMPDIR/outvars $TMPDIR/blockedvarnames $TMPDIR/invarnames $TMPDIR/outvarnames $TMPDIR/source.vars $TMPDIR/varnames
 
 /usr/local/bin/start_jenkins.sh
 
