@@ -6,13 +6,13 @@ services:
     image: kilpio/jenkins_dockerized
     user: root
     ports:
-      - 8080:8080
+      - 8443:8443
       - 50000:50000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOST_JENKINS_HOME:-./jenkins_home/}:/var/jenkins_home
     environment:
-      - JENKINS_OPTS=--httpPort=-1 --httpsPort=8080 --httpsKeyStore=/var/jenkins_home/keystore/jenkins_keystore.jks --httpsKeyStorePassword=${KEYSTORE_PASS:-mypass}
+      - JENKINS_OPTS=--httpPort=-1 --httpsPort=8443 --httpsKeyStore=/var/jenkins_home/keystore/jenkins_keystore.jks --httpsKeyStorePassword=${KEYSTORE_PASS:-mypass}
       - KEYSTORE_PASS=${KEYSTORE_PASS:-mypass}
       - JENKINS_UID=${JENKINS_UID:-$UID}
       - DOCKER_GID=${DOCKER_GID}
