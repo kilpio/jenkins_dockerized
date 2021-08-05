@@ -12,7 +12,7 @@ Clone the repository and run the ```start-jenkins-container.sh``` to start the J
 
 ## Configure
 
-Connect to the web interface <https://YOUR_HOST_ADDR:8443> to proceed in a usual way with a new Jenkins installation. The initial admin password will be generated and stored in the ./jenkins_home/secrets/initialAdminPassword file.
+Connect to the web interface <https://YOUR_HOST_ADDR:8443> to proceed in a usual way with a new Jenkins installation. The initial admin password will be generated and stored in the ./jenkins_home/secrets/initialAdminPassword file. Ruu `docker container exec -it jenkins_dockerized cat /var/jenkins_home/secrets/initialAdminPassword` to see it. Or, if you have xclip installed, run `docker container exec -it jenkins_dockerized cat /var/jenkins_home/secrets/initialAdminPassword | xclip -sel clip` to copy the password to the clipboard. 
 Some essential plugins (known to work with the latest image) are already stored in the jenkins_home/plugins directory. So you may skip the initial plugin installation and then add some necessary plugins later.
 
 ## Ports
