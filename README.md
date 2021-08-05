@@ -12,12 +12,12 @@ Clone the repository and run the ```start-jenkins-container.sh``` to start the J
 
 ## Configure
 
-Connect to the web interface <https://YOUR_HOST_ADDR:8080> to proceed in a usual way with a new Jenkins installation. The initial admin password will be generated and stored in the ./jenkins_home/secrets/initialAdminPassword file.
+Connect to the web interface <https://YOUR_HOST_ADDR:8443> to proceed in a usual way with a new Jenkins installation. The initial admin password will be generated and stored in the ./jenkins_home/secrets/initialAdminPassword file.
 Some essential plugins (known to work with the latest image) are already stored in the jenkins_home/plugins directory. So you may skip the initial plugin installation and then add some necessary plugins later.
 
 ## Ports
 
-Jenkins uses the 8080 port for the HTTPS web interface. The 50000 port is used to communicate with agents.
+Jenkins uses the 8443 port for the HTTPS web interface. The 50000 port is used to communicate with agents.
 At the first run the Jenkins keystore is automatically created in ./jenkins_home/keystore directory. You may provide your own keystore password in the KEYSTORE_PASS variable (otherwise 'mypass' will be used by default).
 
 ## Building the image
